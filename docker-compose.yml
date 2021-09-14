@@ -1,0 +1,36 @@
+version: "3.7"
+
+# configure services
+services:
+
+    # PHP 8.0.10 container with apache 2.4
+    apache:
+        image: 'ixnode/php:8.0.10-apache'
+        container_name: 'de.ixno.php-json-beautifier-0.0.1-apache'
+        hostname: 'de.ixno.php-json-beautifier-0.0.1-apache'
+        restart: always
+        ports:
+            - 8021:80
+        volumes:
+            - ./:/var/www/html/:delegated
+        networks:
+            - network-internal
+
+    # PHP 8.0.10 cli container
+    php:
+        image: 'ixnode/php:8.0.10-cli'
+        container_name: 'de.ixno.php-json-beautifier-0.0.1-cli'
+        hostname: 'de.ixno.php-json-beautifier-0.0.1-cli'
+        restart: always
+        command: "cron -f"
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html/
+        networks:
+            - network-internal
+
+# configure networks
+networks:
+    network-internal:
+        external: false
+        name: 'de.ixno.php-json-beautifier-network'
