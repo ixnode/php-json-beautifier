@@ -61,7 +61,8 @@
         "test": [
             "@phpunit-unit",
             "@sca"
-        ]
+        ],
+        "php-version": "bin/console app:php:version"
     },
     "conflict": {
         "symfony/symfony": "*"
