@@ -45,7 +45,7 @@ final class JsonFormatterTest extends WebTestCase
      * Test wrapper.
      *
      * @test
-     * @testdox 1) Test JsonFormatter class ($title).
+     * @testdox $number) Test JsonFormatter class ($title).
      * @dataProvider dataProvider
      * @param int $number
      * @param string $title
@@ -95,38 +95,52 @@ final class JsonFormatterTest extends WebTestCase
         return [
 
             /**
-             * 1) Empty JSON
+             * 1) Empty JSON's
              */
-            [++$number, 'Simple JSON', '{}', '{}', ],
-
-            /**
-             * 2) Empty JSON
-             */
-            [++$number, 'Simple JSON', '{
+            [++$number, 'Empty JSON', '{}', '{}', ],
+            [++$number, 'Empty JSON', '{
 
 }', '{}', ],
 
             /**
-             * 3) Invalid JSON
+             * 2) Invalid JSON's
              */
-            [++$number, 'Simple JSON', '{":123}', '{}', JsonFormatter::OPTION_INDENT, InvalidJsonGivenException::class, InvalidJsonGivenException::ERROR_CODE, InvalidJsonGivenException::ERROR_MESSAGE],
+            [++$number, 'Invalid JSON', '{":123}', '{}', JsonFormatter::OPTION_INDENT, InvalidJsonGivenException::class, InvalidJsonGivenException::ERROR_CODE, InvalidJsonGivenException::ERROR_MESSAGE],
 
             /**
-             * 4) Simple JSON (indent: 4)
+             * 3) Simple JSON's (indent: 4)
              */
-            [++$number, 'Simple JSON', '{"key1": "value1", "key2": "value2", "key3": "value3"}', '{
+            [++$number, 'Simple JSON (indent: 4)', '{"key1": "value1", "key2": "value2", "key3": "value3"}', '{
     "key1": "value1",
     "key2": "value2",
     "key3": "value3"
 }', ],
+            [++$number, 'Simple JSON (indent: 4)', '{"key1": "value1", "key2": "value2", "key3": [1, 2, 3]}', '{
+    "key1": "value1",
+    "key2": "value2",
+    "key3": [
+        1,
+        2,
+        3
+    ]
+}', ],
 
             /**
-             * 5) Simple JSON (indent: 2)
+             * 4) Simple JSON's (indent: 2)
              */
-            [++$number, 'Simple JSON', '{"key1": "value1", "key2": "value2", "key3": "value3"}', '{
+            [++$number, 'Simple JSON (indent: 2)', '{"key1": "value1", "key2": "value2", "key3": "value3"}', '{
   "key1": "value1",
   "key2": "value2",
   "key3": "value3"
+}', 2, ],
+            [++$number, 'Simple JSON (indent: 2)', '{"key1": "value1", "key2": "value2", "key3": [1, 2, 3]}', '{
+  "key1": "value1",
+  "key2": "value2",
+  "key3": [
+    1,
+    2,
+    3
+  ]
 }', 2, ],
         ];
     }

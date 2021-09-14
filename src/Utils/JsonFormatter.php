@@ -78,7 +78,7 @@ class JsonFormatter
         $jsonObject = json_decode($this->json);
 
         // Beautify the given JSON.
-        $json = json_encode($jsonObject, JSON_PRETTY_PRINT);
+        $json = json_encode($jsonObject, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 
         if ($json === false) {
             throw new Exception('Unable to encode given object.');
@@ -97,8 +97,9 @@ class JsonFormatter
      */
     static protected function reformatIndent(string $json, int $indent = self::OPTION_INDENT): string
     {
-        $formattedJson = preg_replace_callback('/^ +/m', function () use ($indent) {
-            return str_repeat(' ', $indent);
+        $formattedJson = preg_replace_callback('/^([ ])+/m', function (array $matches) use ($indent) {
+            $indentNumber = intval(strlen($matches[0]) / 4);
+            return str_repeat(' ', $indent * $indentNumber);
         }, $json);
 
         if ($formattedJson === null) {
