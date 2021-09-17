@@ -24,51 +24,29 @@
  * SOFTWARE.
  */
 
-namespace App\Form\Type;
+namespace App\Validator\Json;
 
-use App\Entity\Json;
-use App\Validator\Json\IsValid;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraint;
 
 /**
- * Class Json
+ * Class IsValid
  *
  * @author Björn Hempel <bjoern@hempel.li>
- * @version 1.0 (2021-09-13)
- * @package App\Form\Type
+ * @version 1.0 (2021-09-17)
+ * @package App\Validator\Json
  */
-class JsonType extends AbstractType
+#[\Attribute()]
+class IsValid extends Constraint
 {
-    /**
-     * Builds the form for the beautifier.
-     *
-     * @param FormBuilderInterface $builder
-     * @param mixed[] $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-        $builder
-            ->add('json', TextareaType::class, [
-                'label' => 'JSON',
-                'constraints' => new IsValid(),
-            ])
-            ->add('save', SubmitType::class, ['label' => 'Beautify JSON'])
-        ;
-    }
+    public string $message = 'constraints.json.isValid';
 
     /**
-     * Configures some options.
+     * Returns the ConstraintValidator class.
      *
-     * @param OptionsResolver $resolver
+     * @return string
      */
-    public function configureOptions(OptionsResolver $resolver): void
+    public function validatedBy(): string
     {
-        $resolver->setDefaults([
-            'data_class' => Json::class,
-        ]);
+        return sprintf('%s%s', static::class, 'Validator');
     }
 }
