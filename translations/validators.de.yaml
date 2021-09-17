@@ -1,0 +1,4 @@
+# constraints && constraint validators
+constraints:
+  json:
+    isValid: 'Der übergebene JSON String ist nicht gültig: ({{ string }}).'
