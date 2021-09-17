@@ -67,8 +67,6 @@ class JsonController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $jsonFormatter = new JsonFormatter($form->getData()->getJson());
 
-
-
             $json->setJson($jsonFormatter->beautify());
 
             $form = $this->createForm(JsonType::class, $json);
