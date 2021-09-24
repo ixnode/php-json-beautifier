@@ -1,35 +1,104 @@
+# ===========================================
+# A recipe to deliver dynamic Composer PHP pages via nginx.
+#
+# @author Björn Hempel <bjoern@hempel.li>
+# @version 1.0 (2021-09-19)
+# ===========================================
+
+# ===========================================
+# MIT License
+#
+# Copyright (c) 2021 Björn Hempel <bjoern@hempel.li>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+# ===========================================
+
+# ===========================================
+# Start app:
+# ----------
+# ❯ docker-compose up -d
+#
+# Show containers:
+# ----------------
+# ❯ docker container ls
+#
+# Login into containers:
+# ----------------------
+# ❯ docker-compose exec nginx bash
+# ❯ docker-compose exec php bash
+# ❯ docker-compose exec composer bash
+#
+# Open app (local):
+# -----------------
+# - http://localhost:8000/
+#
+# Restart containers:
+# -------------------
+# ❯ docker-compose restart
+#
+# Shutdown containers:
+# --------------------
+# ❯ docker-compose down
+#
+# ===========================================
+
 version: "3.8"
 
 # configure services
 services:
 
-    # PHP 8.0.10 container with apache 2.4
-    # https://hub.docker.com/repository/docker/ixnode/php
-    apache:
-        image: 'ixnode/php:8.0.10-apache'
-        container_name: 'de.ixno.php-json-beautifier-0.0.1-apache'
-        hostname: 'de.ixno.php-json-beautifier-0.0.1-apache'
+    # Nginx to serve the app.
+    nginx:
+        # @see: https://hub.docker.com/_/nginx
+        image: "nginx:latest"
+        container_name: "${NAMESPACE}.nginx"
+        hostname: "${NAMESPACE_HOSTNAME}-nginx"
         restart: always
         ports:
-            - 8021:80
+            - ${PORT_NGINX}:80
         volumes:
-            - ./:/var/www/html/:delegated
+            # Server static pages
+            - .:/var/www/web:cached
+            # Add nginx configuration
+            - ./docker/nginx/conf.d/site.conf:/etc/nginx/conf.d/default.conf
         networks:
             - network-internal
+        depends_on:
+            - php
+            - composer
 
-    # PHP 8.0.10 cli container
-    # https://hub.docker.com/repository/docker/ixnode/php
+    # PHP FPM 8.0.10 to serve dynamic php scripts
     php:
-        image: 'ixnode/php:8.0.10-cli'
-        container_name: 'de.ixno.php-json-beautifier-0.0.1-cli'
-        hostname: 'de.ixno.php-json-beautifier-0.0.1-cli'
-        restart: always
-        command: "cron -f"
-        working_dir: /var/www/html
+        # @see: https://hub.docker.com/_/php
+        image: "php:8.0.10-fpm"
+        container_name: "${NAMESPACE}.php"
+        hostname: "${NAMESPACE_HOSTNAME}-php"
         volumes:
-            - ./:/var/www/html/
+            # Server static pages
+            - .:/var/www/web:delegated
+            # Add PHP configuration
+            - ./docker/php/conf.d/config.ini:/usr/local/etc/php/conf.d/config.ini
         networks:
             - network-internal
+        environment:
+            # app version
+            VERSION_APP: "${VERSION_APP}"
 
     # https://hub.docker.com/_/composer
     # Composer 2.1.6
@@ -50,11 +119,12 @@ services:
     # -----------------
     # $ docker-compose run --rm composer php-version
     composer:
-        image: 'composer:2.1.6'
-        container_name: 'de.ixno.php-json-beautifier-0.0.1-composer'
-        hostname: 'de.ixno.php-json-beautifier-0.0.1-composer'
+        image: "composer:latest"
+        container_name: "${NAMESPACE}.composer"
+        hostname: "${NAMESPACE_HOSTNAME}-composer"
+        command: ["composer", "install"]
         volumes:
-            - $PWD:/app
+            - .:/app:delegated
         user: "${UID}:${GID}"
         networks:
             - network-internal
@@ -63,4 +133,4 @@ services:
 networks:
     network-internal:
         external: false
-        name: 'de.ixno.php-json-beautifier-network'
+        name: "${NAMESPACE}.network.internal"
