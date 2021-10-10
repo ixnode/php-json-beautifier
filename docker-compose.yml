@@ -67,8 +67,8 @@ services:
     nginx:
         # @see: https://hub.docker.com/_/nginx
         image: "nginx:latest"
-        container_name: "${NAMESPACE}.nginx"
-        hostname: "${NAMESPACE_HOSTNAME}-nginx"
+        container_name: "${NAMESPACE_DEVELOPMENT}.nginx"
+        hostname: "${NAMESPACE_HOSTNAME_DEVELOPMENT}-nginx"
         restart: always
         ports:
             - ${PORT_NGINX}:80
@@ -83,22 +83,24 @@ services:
             - php
             - composer
 
-    # PHP FPM 8.0.10 to serve dynamic php scripts
+    # PHP FPM 8.0.11 to serve dynamic php scripts
     php:
         # @see: https://hub.docker.com/_/php
-        image: "php:8.0.10-fpm"
-        container_name: "${NAMESPACE}.php"
-        hostname: "${NAMESPACE_HOSTNAME}-php"
+        image: "php:8.0.11-fpm"
+        container_name: "${NAMESPACE_DEVELOPMENT}.php"
+        hostname: "${NAMESPACE_HOSTNAME_DEVELOPMENT}-php"
         volumes:
-            # Server static pages
-            - .:/var/www/web:delegated
+            # Server dynamic pages
+            - .:/var/www/web:cached
             # Add PHP configuration
             - ./docker/php/conf.d/config.ini:/usr/local/etc/php/conf.d/config.ini
         networks:
             - network-internal
+        #env_file:
+            # add app version
+            #- ./VERSION
         environment:
-            # app version
-            VERSION_APP: "${VERSION_APP}"
+            APP_VERSION: ${APP_VERSION}
 
     # https://hub.docker.com/_/composer
     # Composer 2.1.6
@@ -120,8 +122,8 @@ services:
     # $ docker-compose run --rm composer php-version
     composer:
         image: "composer:latest"
-        container_name: "${NAMESPACE}.composer"
-        hostname: "${NAMESPACE_HOSTNAME}-composer"
+        container_name: "${NAMESPACE_DEVELOPMENT}.composer"
+        hostname: "${NAMESPACE_HOSTNAME_DEVELOPMENT}-composer"
         command: ["composer", "install"]
         volumes:
             - .:/app:delegated
@@ -133,4 +135,4 @@ services:
 networks:
     network-internal:
         external: false
-        name: "${NAMESPACE}.network.internal"
+        name: "${NAMESPACE_DEVELOPMENT}.network.internal"
