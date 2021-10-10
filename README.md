@@ -18,9 +18,11 @@ An example project that uses the following techniques:
 
 ## Run the app
 
+
+
 ### Create a `docker-compose.yml`
 
-Create a file named `docker-compose.yml` with the following content:
+Create a file named [`docker-compose.yml`](https://github.com/ixnode/php-json-beautifier/blob/main/build/docker-compose.yml) with the following content:
 
 ```yaml
 # ===========================================
@@ -50,7 +52,7 @@ services:
       - php
       - composer
 
-  # Use ixnode/php-json-beautifier:latest image (originated from image php:8.0.10-fpm) with the data it contains
+  # Use ixnode/php-json-beautifier:latest image (originated from image php:8.0.11-fpm) with the data it contains
   php:
     image: "ixnode/php-json-beautifier:latest"
     container_name: "de.ixno.php-json-beautifier.php"
@@ -58,9 +60,6 @@ services:
     restart: always
     volumes:
       - data:/var/www/web # This container shares the folder /var/www/web via volume data, because it already exists
-    environment:
-      # app version
-      VERSION_APP: "0.4.1"
 
   # Composer image: This container is executed once and performs a composer install.
   composer:
@@ -87,12 +86,16 @@ If you like nicely named projects, use the .env file
 COMPOSE_PROJECT_NAME=de.ixno.php-json-beautifier
 ```
 
-### Start containers:
+### Start containers
 
 ```bash
 ❯ docker-compose up -d
 ```
 
-### Open browser:
+### Open browser
 
 * http://localhost:8000/
+
+## Build new app with new version
+
+* @see: [Build new app with new version](build/README.md)

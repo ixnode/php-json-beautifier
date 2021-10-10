@@ -1,0 +1,22 @@
+# Ignore .git folder
+**/.git
+**/.gitignore
+
+# Ignore CI/CD folders
+**/.gitlab-ci.yml
+
+# Ignore some cacha and library folders
+/node_modules
+/vendor
+/var
+
+# Ignore some config files
+/.env.dist
+/docker-compose.yml
+
+# Ignore some IDE folders
+/.idea
+
+# Ignore build and docker folders and files
+/build
+/.dockerignore

@@ -2,11 +2,11 @@
 
 {% form_theme form 'bootstrap_5_layout.html.twig' %}
 
-{% block title %}JSON Beautifier{% endblock %}
+{% block title %}JSON Beautifier {{ appVersion }}{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>JSON Beautifier</h1>
+        <h1>JSON Beautifier {{ appVersion }}</h1>
 
         {{ form(form) }}
 

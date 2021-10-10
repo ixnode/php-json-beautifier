@@ -1,0 +1,86 @@
+# ===========================================
+# A docker compose file to deliver the app php-json-beautifier via Nginx and PHP 8.0.x.
+#
+# @author Björn Hempel <bjoern@hempel.li>
+# @version 1.0 (2021-10-10)
+# ===========================================
+
+# ===========================================
+# Installation:
+# -------------
+# ❯ git clone git@github.com:ixnode/php-json-beautifier.git && cd php-json-beautifier
+# ❯ cd build
+# ❯ docker-compose up -d
+# ❯ docker-compose exec php composer test
+#
+# Show containers:
+# ----------------
+# ❯ docker container ls
+#
+# Show logs:
+# ----------------
+# ❯ docker-compose logs -f
+#
+# Login into containers:
+# ----------------------
+# ❯ docker-compose exec nginx bash
+# ❯ docker-compose exec php bash
+#
+# Open app (local):
+# -----------------
+# - http://127.0.0.1:8000
+#
+# Restart containers:
+# -------------------
+# ❯ docker-compose restart
+#
+# Shutdown containers:
+# --------------------
+# ❯ docker-compose down
+#
+# ===========================================
+
+version: "3.8"
+
+# Configure services
+services:
+
+  # Nginx to serve the app.
+  nginx:
+    image: "nginx:latest"
+    container_name: "${NAMESPACE}.nginx"
+    hostname: "${NAMESPACE_HOSTNAME}-nginx"
+    restart: always
+    ports:
+      - 8000:80
+    volumes:
+      # Server static pages
+      - data:/var/www/web
+      # Add nginx configuration
+      - ../docker/nginx/conf.d/site.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+      - composer
+
+  # Use ixnode/php-json-beautifier:latest image (originated from image php:8.0.11-fpm) with the data it contains
+  php:
+    image: "ixnode/php-json-beautifier:latest"
+    container_name: "${NAMESPACE}.php"
+    hostname: "${NAMESPACE_HOSTNAME}-php"
+    restart: always
+    volumes:
+      - data:/var/www/web # This container shares the folder /var/www/web via volume data, because it already exists
+
+  # Composer image: This container is executed once and performs a composer install.
+  composer:
+    image: "composer:latest"
+    container_name: "${NAMESPACE}.composer"
+    hostname: "${NAMESPACE_HOSTNAME}-composer"
+    command: ["composer", "install"]
+    volumes:
+      - data:/app # This container shares the folder /app via volume data, because it already exists
+
+# Configure volumes
+volumes:
+  data:
+    name: "${NAMESPACE}.volume.data"

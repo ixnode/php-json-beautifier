@@ -40,6 +40,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class JsonController extends AbstractController
 {
+    const NAME_APP_VERSION = 'app.version';
+
     /**
      * Shows the json form.
      *
@@ -74,6 +76,7 @@ class JsonController extends AbstractController
 
         return $this->render('json/form.html.twig', [
             'form' => $form->createView(),
+            'appVersion' => $this->getParameter(self::NAME_APP_VERSION)
         ]);
     }
 }
