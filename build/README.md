@@ -19,6 +19,10 @@ VERSION file version
 0.4.1
 
 Console version
+# Composer install
+❯ docker-compose run composer composer install
+
+# Use VersioningBundle
 ❯ bin/console app:version:status
 Provider: Shivas\VersioningBundle\Provider\VersionProvider
 Formatter: Shivas\VersioningBundle\Formatter\GitDescribeFormatter
