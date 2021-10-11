@@ -1,4 +1,6 @@
-# Build new app with new version
+# Build a new app with new version and push it to the repository
+
+Build a new app with new version and push this app to your docker repository.
 
 ## Clone the app:
 
@@ -19,7 +21,7 @@ v0.4.1
 0.4.1
 
 # Console version
-❯ docker-compose run composer composer install
+❯ docker-compose run --rm composer install
 ❯ bin/console app:version:status
 Provider: Shivas\VersioningBundle\Provider\VersionProvider
 Formatter: Shivas\VersioningBundle\Formatter\GitDescribeFormatter
@@ -61,6 +63,12 @@ New version: 0.4.2
 ❯ git push
 ```
 
+## Run tests
+
+```bash
+❯ docker-compose run --rm composer test
+```
+
 ## Tag the app (git)
 
 ```bash
@@ -69,11 +77,15 @@ New version: 0.4.2
 ❯ git push origin "v$(cat VERSION)"
 ```
 
-## Build the app (latest)
+## Build the app
 
 ```bash
 # root web directory
-❯ docker build -t ixnode/php-json-beautifier:latest -f build/Dockerfile --build-arg APP_VERSION=$(cat VERSION) .
+❯ docker build \
+  -t ixnode/php-json-beautifier:$(cat VERSION) \
+  -t ixnode/php-json-beautifier:latest \
+  -f build/Dockerfile \
+  --build-arg APP_VERSION=$(cat VERSION) .
 ❯ docker image ls
 ```
 
@@ -82,13 +94,6 @@ New version: 0.4.2
 ```bash
 ❯ docker login -u [username]
 ❯ docker push ixnode/php-json-beautifier:latest
-```
-
-## Tag latest version number - `$(cat VERSION)`
-
-```bash
-❯ docker tag ixnode/php-json-beautifier:latest ixnode/php-json-beautifier:$(cat VERSION)
-❯ docker image ls
 ❯ docker push ixnode/php-json-beautifier:$(cat VERSION)
 ```
 
