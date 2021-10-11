@@ -1,4 +1,6 @@
-# Build new app with new version
+# Build a new app with new version and push it to the repository
+
+Build a new app with new version and push this app to your docker repository.
 
 ## Clone the app:
 
@@ -19,7 +21,7 @@ v0.4.1
 0.4.1
 
 # Console version
-❯ docker-compose run composer composer install
+❯ docker-compose run --rm composer install
 ❯ bin/console app:version:status
 Provider: Shivas\VersioningBundle\Provider\VersionProvider
 Formatter: Shivas\VersioningBundle\Formatter\GitDescribeFormatter
@@ -59,6 +61,12 @@ New version: 0.4.2
 ❯ git add VERSION .env
 ❯ git commit -m "Add version $(cat VERSION)"
 ❯ git push
+```
+
+## Run tests
+
+```bash
+❯ docker-compose run --rm composer test
 ```
 
 ## Tag the app (git)

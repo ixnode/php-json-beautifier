@@ -44,10 +44,10 @@ services:
     ports:
       - 8000:80
     volumes:
-      # Server static pages
+      # Server static pages (uses the data from php service)
       - data:/var/www/web
-      # Add nginx configuration
-      - ../docker/nginx/conf.d/site.conf:/etc/nginx/conf.d/default.conf
+      # Add nginx configuration (uses the data from php service)
+      - nginx_config:/etc/nginx/conf.d
     depends_on:
       - php
       - composer
@@ -59,7 +59,12 @@ services:
     hostname: "de-ixno-php-json-beautifier-php"
     restart: always
     volumes:
-      - data:/var/www/web # This container shares the folder /var/www/web via volume data, because it already exists
+      # This container shares the folder /var/www/web via volume data, because the container starts
+      # first and the content already exists
+      - data:/var/www/web
+      # This container shares the folder /var/www/web/docker/nginx/conf.d via volume nginx_config, because
+      # the container starts first and the content already exists
+      - nginx_config:/var/www/web/docker/nginx/conf.d
 
   # Composer image: This container is executed once and performs a composer install.
   composer:
@@ -74,6 +79,8 @@ services:
 volumes:
   data:
     name: "de.ixno.php-json-beautifier.volume.data"
+  nginx_config:
+    name: "de.ixno.php-json-beautifier.volume.nginx.config"
 ```
 
 ### Create a `.env` file
@@ -96,6 +103,6 @@ COMPOSE_PROJECT_NAME=de.ixno.php-json-beautifier
 
 * http://localhost:8000/
 
-## Build new app with new version
+## Other tasks 
 
-* @see: [Build new app with new version](build/README.md)
+* [Build a new app with new version and push it to the repository](build/README.md)
