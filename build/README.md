@@ -9,6 +9,13 @@ Build a new app with new version and push this app to your docker repository.
   cd php-json-beautifier
 ```
 
+## Run tests
+
+```bash
+❯ docker-compose run --rm composer install
+❯ docker-compose run --rm composer test
+```
+
 ## Check the current version of the app:
 
 ```bash
@@ -21,7 +28,6 @@ v0.4.1
 0.4.1
 
 # Console version
-❯ docker-compose run --rm composer install
 ❯ bin/console app:version:status
 Provider: Shivas\VersioningBundle\Provider\VersionProvider
 Formatter: Shivas\VersioningBundle\Formatter\GitDescribeFormatter
@@ -63,12 +69,6 @@ New version: 0.4.2
 ❯ git push
 ```
 
-## Run tests
-
-```bash
-❯ docker-compose run --rm composer test
-```
-
 ## Tag the app (git)
 
 ```bash
@@ -93,8 +93,8 @@ New version: 0.4.2
 
 ```bash
 ❯ docker login -u [username]
-❯ docker push ixnode/php-json-beautifier:latest
 ❯ docker push ixnode/php-json-beautifier:$(cat VERSION)
+❯ docker push ixnode/php-json-beautifier:latest
 ```
 
 ## Start using the build image
