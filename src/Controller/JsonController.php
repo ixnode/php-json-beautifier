@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * MIT License
@@ -40,7 +42,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class JsonController extends AbstractController
 {
-    const NAME_APP_VERSION = 'app.version';
+    public const NAME_APP_VERSION = 'app.version';
 
     /**
      * Shows the json form.

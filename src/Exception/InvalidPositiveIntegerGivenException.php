@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * MIT License
@@ -31,7 +33,7 @@ use Throwable;
 
 final class InvalidPositiveIntegerGivenException extends Exception
 {
-    const ERROR_MESSAGE = 'The given JSON is invalid "%s".';
+    public const ERROR_MESSAGE = 'The given JSON is invalid "%s".';
 
     /**
      * InvalidPositiveIntegerGivenException constructor.

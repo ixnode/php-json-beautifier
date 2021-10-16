@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * MIT License
@@ -39,7 +41,7 @@ use Exception;
  */
 class JsonFormatter
 {
-    const OPTION_INDENT = 4;
+    public const OPTION_INDENT = 4;
 
     protected string $json;
 
@@ -95,7 +97,7 @@ class JsonFormatter
      * @return string
      * @throws Exception
      */
-    static protected function reformatIndent(string $json, int $indent = self::OPTION_INDENT): string
+    protected static function reformatIndent(string $json, int $indent = self::OPTION_INDENT): string
     {
         $formattedJson = preg_replace_callback('/^([ ])+/m', function (array $matches) use ($indent) {
             $indentNumber = intval(strlen($matches[0]) / 4);
@@ -115,7 +117,7 @@ class JsonFormatter
      * @param string $json
      * @return bool
      */
-    static protected function isJson(string $json): bool
+    protected static function isJson(string $json): bool
     {
         json_decode($json);
 

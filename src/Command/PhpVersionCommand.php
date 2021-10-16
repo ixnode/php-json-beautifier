@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * MIT License
@@ -43,7 +45,7 @@ class PhpVersionCommand extends Command
 {
     protected static $defaultName = 'app:php:version';
 
-    const TEMPLATE_PHP_VERSION = 'PHP version: %d.%d.%d';
+    public const TEMPLATE_PHP_VERSION = 'PHP version: %d.%d.%d';
 
     /**
      * Configures this command.

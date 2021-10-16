@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * MIT License
@@ -41,11 +43,11 @@ class EnvVersionWriter implements WriterInterface
 {
     private string $path;
 
-    const NAME_APP_VERSION = 'APP_VERSION=%s';
+    public const NAME_APP_VERSION = 'APP_VERSION=%s';
 
-    const REGEXP = '~^APP_VERSION=(.+)$~m';
+    public const REGEXP = '~^APP_VERSION=(.+)$~m';
 
-    const TEMPLATE_ADD = <<<TEMPLATE
+    public const TEMPLATE_ADD = <<<TEMPLATE
 
 # App version
 APP_VERSION=%s
