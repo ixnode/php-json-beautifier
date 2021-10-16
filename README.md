@@ -1,9 +1,11 @@
 # PHPJsonBeautifier
 
 [![CI workflow](https://github.com/ixnode/php-json-beautifier/actions/workflows/ci-workflow.yml/badge.svg?branch=main)](https://github.com/ixnode/php-json-beautifier/actions/workflows/ci-workflow.yml)
-[![PHP](https://img.shields.io/badge/PHP-8.0-777bb3.svg?logo=php&logoColor=white&labelColor=555555&style=flat)](https://www.php.net/supported-versions.php)
+[![Release](https://img.shields.io/github/v/release/ixnode/php-json-beautifier)](https://github.com/ixnode/php-json-beautifier/releases)
+[![PHP](https://img.shields.io/badge/PHP-^8.0-777bb3.svg?logo=php&logoColor=white&labelColor=555555&style=flat)](https://www.php.net/supported-versions.php)
 [![PHPStan](https://img.shields.io/badge/PHPStan-Level%208-brightgreen.svg?style=flat)](https://phpstan.org/user-guide/rule-levels)
-[![LICENSE](https://img.shields.io/badge/License-MIT-428f7e.svg?logo=open%20source%20initiative&logoColor=white&labelColor=555555&style=flat)](https://github.com/ixnode/php-json-beautifier/blob/master/LICENSE.md)
+[![PHPStan](https://img.shields.io/badge/PHPCS-PSR12-brightgreen.svg?style=flat)](https://www.php-fig.org/psr/psr-12/)
+[![LICENSE](https://img.shields.io/github/license/ixnode/php-json-beautifier)](https://github.com/ixnode/php-json-beautifier/blob/master/LICENSE.md)
 
 An example project that uses the following techniques:
 
@@ -90,7 +92,7 @@ If you like nicely named projects, use the .env file
 ```bash
 # @see https://docs.docker.com/compose/reference/envvars/#compose_project_name
 # ❯ vi docker-compose/.env
-COMPOSE_PROJECT_NAME=de.ixno.php-json-beautifier
+COMPOSE_PROJECT_NAME=de-ixno-php-json-beautifier
 ```
 
 ### Start containers

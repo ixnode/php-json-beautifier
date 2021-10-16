@@ -20,6 +20,7 @@
         "symfony/yaml": "5.3.*"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.2",
         "phpstan/phpstan": "^0.12.99",
         "phpunit/phpunit": "^9",
         "shivas/versioning-bundle": "^4.0",
@@ -60,9 +61,22 @@
         ],
         "phpunit-unit": "phpunit tests/Unit --testdox",
         "sca": "phpstan analyse --level 8 --memory-limit 256M src tests",
+        "phpcs-src": "vendor/bin/php-cs-fixer --dry-run --using-cache=no --rules=@PSR12 fix src",
+        "phpcs-tests": "vendor/bin/php-cs-fixer --dry-run --using-cache=no --rules=@PSR12 fix tests",
+        "phpcs": [
+            "@phpcs-src",
+            "@phpcs-tests"
+        ],
+        "phpcs-src-fix": "vendor/bin/php-cs-fixer --using-cache=no --rules=@PSR12 -v fix src",
+        "phpcs-tests-fix": "vendor/bin/php-cs-fixer --using-cache=no --rules=@PSR12 -v fix tests",
+        "phpcs-fix": [
+            "@phpcs-src-fix",
+            "@phpcs-tests-fix"
+        ],
         "test": [
             "@phpunit-unit",
-            "@sca"
+            "@sca",
+            "@phpcs"
         ],
         "php-version": "bin/console app:php:version"
     },

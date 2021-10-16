@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 /*
  * MIT License
@@ -38,9 +40,9 @@ use Throwable;
  */
 final class UnexpectedNullGivenException extends Exception
 {
-    const ERROR_CODE = 422;
+    public const ERROR_CODE = 422;
 
-    const ERROR_MESSAGE = 'Unexpected NULL value given.';
+    public const ERROR_MESSAGE = 'Unexpected NULL value given.';
 
     /**
      * UnexpectedNullGivenException constructor.
