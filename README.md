@@ -105,6 +105,32 @@ COMPOSE_PROJECT_NAME=de-ixno-php-json-beautifier
 
 * http://localhost:8000/
 
+### Or use command line
+
+#### Via parameter
+
+```bash
+❯ docker-compose exec php bin/console app:json:beautify '{"value": "123"}'
+```
+
+```json
+{
+    "value": "123"
+}
+```
+
+#### Via STDIN
+
+```bash
+❯ echo '{"value": "123"}' | docker-compose exec php bin/console app:json:beautify
+```
+
+```json
+{
+    "value": "123"
+}
+```
+
 ## Other tasks 
 
 * [Build a new app with new version and push it to the repository](build/README.md)

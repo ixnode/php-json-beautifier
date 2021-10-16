@@ -89,6 +89,7 @@ services:
         image: "php:8.0.11-fpm"
         container_name: "${NAMESPACE_DEVELOPMENT}.php"
         hostname: "${NAMESPACE_HOSTNAME_DEVELOPMENT}-php"
+        working_dir: /var/www/web
         volumes:
             # Server dynamic pages
             - .:/var/www/web:cached

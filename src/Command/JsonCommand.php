@@ -38,13 +38,14 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\StreamableInputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Class JsonCommand
  *
  * @author Björn Hempel <bjoern@hempel.li>
- * @version 1.1 (2021-09-14)
+ * @version 1.1 (2021-10-16)
  * @package App\Command
  */
 class JsonCommand extends Command
@@ -65,10 +66,35 @@ class JsonCommand extends Command
 
         $this
             ->setName(self::$defaultName)
-            ->setDescription('Shows PHP version to command line')
+            ->setDescription('Converts the given JSON value.')
             ->setDefinition([
-                new InputArgument('json', InputArgument::REQUIRED, 'The JSON to beautify.', null),
+                new InputArgument('json', InputArgument::OPTIONAL, 'The JSON to beautify.', null),
             ]);
+    }
+
+    /**
+     * Returns the STDIN if given.
+     *
+     * @return ?string
+     * @throws Exception
+     */
+    protected function getStdin(): ?string
+    {
+        $fh = fopen('php://stdin', 'r');
+
+        if ($fh === false) {
+            throw new Exception(sprintf('Unexpected fopen result (%s:%d)', __FILE__, __LINE__));
+        }
+
+        stream_set_blocking($fh, false);
+
+        $stdin = fgets($fh);
+
+        if ($stdin === false) {
+            return null;
+        }
+
+        return $stdin;
     }
 
     /**
@@ -83,8 +109,18 @@ class JsonCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /* Get arguments */
-        $json = $input->getArgument('json');
+        /* Try to JSON from STDIN */
+        $json = $this->getStdin();
+
+        /* Try to get JSON from argument */
+        if ($json === null) {
+            $json = $input->getArgument('json');
+        }
+
+        /* Expect non null value */
+        if ($json === null) {
+            throw new Exception('Please specify the JSON value via STDIN or parameter.');
+        }
 
         $jsonFormatter = new JsonFormatter($json);
 
